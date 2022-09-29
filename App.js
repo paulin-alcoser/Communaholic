@@ -1,20 +1,48 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Image, ImageBackground, View } from 'react-native';
+import LoadScreen from './screens/LoadScreen.js';
+import AnimationScreen from './screens/AnimationScreen.js';
+import TopicsScreen from './screens/TopicsScreen.js';
+import ObjectivesScreen from './screens/ObjectivesScreen.js';
+import QuizScreen from './screens/QuizScreen.js';
+import ScoreScreen from './screens/ScoreScreen.js'
+import { NavigationContainer } from '@react-navigation/native'
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+
+const Stack = createNativeStackNavigator();
 
 export default function App() {
+
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{
+        headerStyle: {
+          backgroundColor: 'transparent'
+        },
+        headerTintColor: 'red',
+        headerTransparent: true,
+        headerTitle: '',
+        headerLeftContainerStyle: {
+          paddingLeft: 20
+        }
+      }}>
+        <Stack.Screen
+          name="LoadScreen"
+          component={LoadScreen}
+          options={{ title: 'Welcome' }}
+        />
+        <Stack.Screen name="Animation" component={AnimationScreen} />
+        <Stack.Screen name="Topics" component={TopicsScreen} />
+        <Stack.Screen name="Objectives" component={ObjectivesScreen} />
+        <Stack.Screen name="Quiz" component={QuizScreen} />
+        <Stack.Screen name="Score" component={ScoreScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
+
 });
+
+
