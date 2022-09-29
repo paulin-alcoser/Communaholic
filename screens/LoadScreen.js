@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Image, ImageBackground, View, TouchableOpacity, TextInput, Animated, Easing } from 'react-native';
-import React, { useRef, useEffect } from 'react'
+import React, { useRef, useEffect, useState } from 'react'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 
 
 export default function LoadScreen({ navigation }) {
-    const [username, onChangeUsername] = React.useState("Alice")
+    const [username, onChangeUsername] = useState("Alice")
     const userFade = useRef(new Animated.Value(0)).current
     const buttonFade = useRef(new Animated.Value(0)).current;
     // useEffect(() => {
@@ -40,7 +40,7 @@ export default function LoadScreen({ navigation }) {
             color: '#cc99ff',
             fontSize: 40,
             marginBottom: '33%',
-            opacity: buttonFade
+            // opacity: buttonFade
         },
         input: {
             marginTop: '10%',
@@ -54,7 +54,7 @@ export default function LoadScreen({ navigation }) {
             width: '50%',
             borderRadius: 15,
             color: 'black',
-            opacity: userFade
+            // opacity: userFade
         },
     });
     return (

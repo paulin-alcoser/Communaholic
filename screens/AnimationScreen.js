@@ -2,7 +2,7 @@ import { StyleSheet, Text, View, Animated, Easing } from 'react-native'
 import React, { useRef, useEffect } from 'react'
 
 export default function AnimationScreen({ navigation, route }) {
-    const backgroundFade = useRef(new Animated.Value(0)).current
+    const backgroundFade = useRef(new Animated.Value(0)).current;
     const logoFade = useRef(new Animated.Value(0)).current;
     const { username } = route.params
 

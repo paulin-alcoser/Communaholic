@@ -1,4 +1,4 @@
-import { StyleSheet, Text, View, ImageBackground, Image, TouchableOpacity, Animated } from 'react-native'
+import { StyleSheet, Text, View, ImageBackground, Image, TouchableOpacity, Animated, Linking } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
 import React, { useState } from 'react'
 import Data from '../Data/Data'
@@ -45,6 +45,7 @@ export default function QuizScreen({ navigation }) {
       setCorrectOption(null)
       setIsOptionDisabled(false);
       setShowNextButton(false);
+      setShowVideo(false);
     }
   }
 
@@ -110,13 +111,44 @@ export default function QuizScreen({ navigation }) {
 
   }
 
+  const renderVideo = () => {
+
+    const videoUrl = allQuestions[currentQuestionIndex].video
+    const videoTitle = allQuestions[currentQuestionIndex].title
+
+    return (
+      <View style={{
+        backgroundColor: showVideo ? '#6666ff' : 'transparent',
+        width: '60%',
+        height: '20%',
+        marginLeft: '5%',
+        borderRadius: 20,
+        justifyContent: 'center',
+        alignItems: 'center'
+      }
+      }>
+        <Text style={{
+          color: showVideo ? 'white' : 'transparent',
+          fontSize: 14,
+          padding: 25,
+          textAlign: 'center'
+        }}>Watch this LinkedIn learning video on {videoTitle}
+        </Text>
+        <MaterialCommunityIcons onPress={() => Linking.openURL(`${videoUrl}`)} name="play" style={{
+          color: showVideo ? 'white' : 'transparent',
+          fontSize: 50,
+          borderColor: 'white',
+        }} />
+      </View>
+    )
+  }
   return (
     <View style={styles.container}>
       <ImageBackground source={require('../assets/img/background.png')} resizeMode="contain" style={styles.image}>
         <Image style={styles.home} source={require('../assets/img/small_logo.png')} />
         <Image style={styles.puzzle} source={require('../assets/img/puzzle.png')} />
         {/* Video */}
-        { }
+        {renderVideo()}
         {/* Question */}
         {renderQuestion()}
 
