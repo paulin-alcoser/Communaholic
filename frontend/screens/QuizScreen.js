@@ -1,11 +1,13 @@
 import { StyleSheet, Text, View, ImageBackground, Image, TouchableOpacity, Animated, Linking } from 'react-native'
 import MaterialCommunityIcons from 'react-native-vector-icons/MaterialCommunityIcons';
-import React, { useState } from 'react'
+import React, { useState, useEffect } from 'react'
 import Data from '../Data/Data'
-import { LearnMoreLinks } from 'react-native/Libraries/NewAppScreen';
 
-export default function QuizScreen({ navigation }) {
+let timer = () => { }
+
+export default function QuizScreen({ navigation, route }) {
   const allQuestions = Data
+  const { needTimer } = route.params
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0)
   const [currentOptionSelected, setCurrentOptionSelected] = useState(null)
   const [correctOption, setCorrectOption] = useState(null)
@@ -14,7 +16,29 @@ export default function QuizScreen({ navigation }) {
   const [showNextButton, setShowNextButton] = useState(false)
   const [showVideo, setShowVideo] = useState(false)
   const [progress, setProgress] = useState(new Animated.Value(0));
+  const [remainingTime, setRemainingTime] = useState(15)
   const [videosLink, setVideosLink] = useState([])
+
+  useEffect(() => {
+    countdownTimer()
+  }, [])
+
+  useEffect(() => {
+    if (remainingTime == 0) {
+      setRemainingTime(15)
+      clearInterval(timer);
+      navigation.navigate('Score', { score, videosLink, questionsLength: allQuestions.length })
+      return
+    }
+  }, [remainingTime])
+
+  const countdownTimer = () => {
+    setRemainingTime(15)
+    clearInterval(timer);
+    timer = setInterval(() => {
+      setRemainingTime(prevTime => prevTime - 1)
+    }, 1000);
+  }
 
   const validateAnswer = (selectedOption) => {
     let correct_option = allQuestions[currentQuestionIndex].correctOption
@@ -111,6 +135,30 @@ export default function QuizScreen({ navigation }) {
 
   }
 
+  const renderClock = () => {
+    return (
+      <View style={{
+        backgroundColor: 'transparent',
+        width: '15%',
+        height: '5%',
+        marginLeft: '10%',
+        borderRadius: '7.5%',
+        justifyContent: 'center',
+        alignItems: 'center',
+        borderColor: needTimer ? '#cc99ff' : 'transparent',
+        borderWidth: 3,
+        marginLeft: '30%',
+        marginTop: '5%',
+
+      }}>
+        <Text style={{
+          color: needTimer ? '#cc99ff' : 'transparent',
+          fontWeight: 'bold'
+        }}> {remainingTime}</Text>
+      </View >
+    )
+  }
+
   const renderVideo = () => {
 
     const videoUrl = allQuestions[currentQuestionIndex].video
@@ -119,9 +167,9 @@ export default function QuizScreen({ navigation }) {
     return (
       <View style={{
         backgroundColor: showVideo ? '#6666ff' : 'transparent',
-        width: '60%',
-        height: '20%',
-        marginLeft: '5%',
+        width: '55%',
+        height: '15%',
+        marginLeft: '10%',
         borderRadius: 20,
         justifyContent: 'center',
         alignItems: 'center'
@@ -130,13 +178,13 @@ export default function QuizScreen({ navigation }) {
         <Text style={{
           color: showVideo ? 'white' : 'transparent',
           fontSize: 14,
-          padding: 25,
+          padding: '5%',
           textAlign: 'center'
         }}>Watch this LinkedIn learning video on {videoTitle}
         </Text>
         <MaterialCommunityIcons onPress={() => Linking.openURL(`${videoUrl}`)} name="play" style={{
           color: showVideo ? 'white' : 'transparent',
-          fontSize: 50,
+          fontSize: '40%',
           borderColor: 'white',
         }} />
       </View>
@@ -149,6 +197,8 @@ export default function QuizScreen({ navigation }) {
         <Image style={styles.puzzle} source={require('../assets/img/puzzle.png')} />
         {/* Video */}
         {renderVideo()}
+        {/* Clock */}
+        {renderClock()}
         {/* Question */}
         {renderQuestion()}
 
