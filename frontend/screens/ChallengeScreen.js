@@ -17,6 +17,9 @@ export default function ChallengeScreen({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate('Quiz', { needTimer: true })} style={styles.challenge_btn}>
                         <Text style={styles.challenge_btn_txt}> 60 second Challenge </Text>
                     </TouchableOpacity>
+                    <TouchableOpacity onPress={() => navigation.navigate('GroupChallenge')} style={styles.challenge_btn}>
+                        <Text style={styles.challenge_btn_txt}> Group Challenge </Text>
+                    </TouchableOpacity>
                 </View>
             </ImageBackground>
         </View>

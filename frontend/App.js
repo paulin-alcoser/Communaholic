@@ -7,6 +7,7 @@ import ObjectivesScreen from './screens/ObjectivesScreen.js';
 import QuizScreen from './screens/QuizScreen.js';
 import ScoreScreen from './screens/ScoreScreen.js'
 import ChallengeScreen from './screens/ChallengeScreen.js';
+import GroupChallengeScreen from './screens/GroupChallengeScreen.js';
 import { NavigationContainer } from '@react-navigation/native'
 import { createNativeStackNavigator } from '@react-navigation/native-stack';
 
@@ -27,17 +28,14 @@ export default function App() {
           paddingLeft: 20
         }
       }}>
-        <Stack.Screen
-          name="LoadScreen"
-          component={LoadScreen}
-          options={{ title: 'Welcome' }}
-        />
+        <Stack.Screen name="LoadScreen" component={LoadScreen} options={{ title: 'Welcome' }}/>
         <Stack.Screen name="Animation" component={AnimationScreen} />
         <Stack.Screen name="Topics" component={TopicsScreen} />
         <Stack.Screen name="Objectives" component={ObjectivesScreen} />
         <Stack.Screen name="Challenge" component={ChallengeScreen} />
         <Stack.Screen name="Quiz" component={QuizScreen} />
         <Stack.Screen name="Score" component={ScoreScreen} />
+        <Stack.Screen name="GroupChallenge" component={GroupChallengeScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );
