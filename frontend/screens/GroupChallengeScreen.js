@@ -1,24 +1,34 @@
 import { StyleSheet, Text, View, ImageBackground, Image, TextInput } from 'react-native'
 import React, { useState, useEffect } from 'react'
 import io from "socket.io-client"
+import {
+    initiateSocket, disconnectSocket,
+    subscribeToChat, sendMessage, sendContribution, listenToContributions
+} from '../sockets/sockets';
 
 export default function GroupChallengeScreen({ navigation, route }) {
-    const [messages, setMessages] = useState([
-        {
-            message: "Consumer advertising",
-            ownerId: 1,
-        },
-        {
-            message: "ESG Report",
-            ownerId: 2,
-        }
-    ])
+    let socket
+    const [contributions, setContributions] = useState(["Consumer advertising", "ESG Report"])
+    const [contribution, setContribution] = useState("")
 
     useEffect(() => {
-        const socket = io("http://localhost:3000")
+        initiateSocket(1)
+        listenToContributions((newCont) => {
+            console.log('newCont; ', newCont)
+            console.log('contributions: ', contributions)
+            setContributions([...contributions, newCont])
+            console.log('contributions after: ', contributions)
+        })
     }, [])
-    const renderMessages = () => {
-        return messages.map((el, idx) => (
+
+    const submitContribution = () => {
+        console.log('what Iam submitting', contribution)
+        sendContribution(contribution)
+        setContribution("")
+    }
+
+    const renderContributions = () => {
+        return contributions.map((el, idx) => (
             <Text key={idx} style={{
                 color: 'black',
                 backgroundColor: '#cc99ff',
@@ -33,12 +43,11 @@ export default function GroupChallengeScreen({ navigation, route }) {
                 marginLeft: '10%',
                 marginRight: '10%',
                 overflow: 'hidden'
-            }
-            }> {el.message}</Text>
+            }}> {el}    </Text>
         )
-
         )
     }
+
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../assets/img/background.png')} resizeMode="contain" style={styles.image}>
@@ -46,13 +55,15 @@ export default function GroupChallengeScreen({ navigation, route }) {
                 <Image source={require('../assets/img/puzzle.png')} style={styles.puzzle} />
                 <Text style={styles.title}> What are the challenges you currently face in sustainability communications?:</Text>
                 <TextInput
+                    autoCorrect={false}
                     style={styles.input}
-                    // onChangeText={(val) => onChangeUsername(val)}
+                    onChangeText={(val) => setContribution(val)}
+                    onSubmitEditing={() => submitContribution()}
                     placeholder="Type Here"
-                // value={username}
+                    value={contribution}
                 />
                 <View style={styles.messagesContainer}>
-                    {renderMessages()}
+                    {renderContributions()}
                 </View>
 
             </ImageBackground>
