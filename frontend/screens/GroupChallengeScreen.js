@@ -7,7 +7,7 @@ export default function GroupChallengeScreen({ navigation, route }) {
             <ImageBackground source={require('../assets/img/background.png')} resizeMode="contain" style={styles.image}>
                 <Image style={styles.home} source={require('../assets/img/small_logo.png')} />
                 <Image source={require('../assets/img/puzzle.png')} style={styles.puzzle} />
-                <Text>GroupChallengeScreen</Text>
+                <Text style={styles.title}> Learning objectives of this challenge:</Text>
             </ImageBackground>
         </View>
     )
@@ -34,5 +34,13 @@ const styles = StyleSheet.create({
         position: 'absolute',
         top: '5%',
         right: '5%'
+    },
+    title: {
+        fontSize: 30,
+        justifyContent: 'center',
+        width: '80%',
+        margin: 15,
+        lineHeight: 45,
+
     }
 })
