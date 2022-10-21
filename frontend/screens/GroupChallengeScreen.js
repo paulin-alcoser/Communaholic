@@ -2,9 +2,13 @@ import { StyleSheet, Text, View, ImageBackground, Image, TextInput } from 'react
 import React, { useState, useEffect } from 'react'
 import io from "socket.io-client"
 import {
-    initiateSocket, disconnectSocket,
+    initiateSocket, listenToNewConnections, disconnectSocket,
     subscribeToChat, sendMessage, sendContribution, listenToContributions
 } from '../sockets/sockets';
+
+import Emoji from './EmojiScreen';
+
+const Symbols = ["🐷", "🐶", "🐸", "🐭", "🐺", "🐻"]
 
 export default function GroupChallengeScreen({ navigation, route }) {
     let socket
@@ -57,6 +61,15 @@ export default function GroupChallengeScreen({ navigation, route }) {
         )
     }
 
+    const renderParticipants = () => {
+        const emojis = []
+        for(let i = 0; i < 2; i++){
+            emojis.push(<Emoji key={i} symbol={Symbols[i]} />)
+        }
+        emojis.push(<Text style={{color:"#cc99ff"}}>in the challenge</Text>)
+        return emojis.map( emoji => (emoji))
+    }
+
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../assets/img/background.png')} resizeMode="contain" style={styles.image}>
@@ -75,8 +88,7 @@ export default function GroupChallengeScreen({ navigation, route }) {
                     {renderContributions()}
                 </View>
                 <View style={styles.participantsContainer}>
-                    <Text>I am participant</Text>
-
+                    {renderParticipants()}
                 </View>
 
             </ImageBackground>
@@ -134,5 +146,12 @@ const styles = StyleSheet.create({
         // backgroundColor: 'black',
         justifyContent: 'center',
         alignItems: 'center'
+    },
+    participantsContainer:{
+        display: 'flex',
+        flexDirection: 'row',
+        width:'80%',
+        position: 'absolute',
+        bottom: '5%'
     }
 })
