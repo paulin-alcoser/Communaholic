@@ -73,8 +73,8 @@ export default function ObjectivesScreen({ navigation, route }) {
                             marginLeft: '5%',
                             marginBottom: '5%',
                         }}> Teammates Activity (6)</Text>
-                        {friends.map(friend => (
-                            <View style={{
+                        {friends.map((friend,idx) => (
+                            <View key={idx} style={{
                                 display: 'flex',
                                 flexDirection: 'row',
                                 // justifyContent: 'space-evenly',

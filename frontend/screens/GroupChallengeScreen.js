@@ -12,25 +12,23 @@ const Symbols = ["🐷", "🐶", "🐸", "🐭", "🐺", "🐻"]
 
 export default function GroupChallengeScreen({ navigation, route }) {
     let socket
-    const [contributions, setContributions] = useState(["Consumer advertising", "ESG Report"])
+    const [contributions, setContributions] = useState([])
     const [contribution, setContribution] = useState("")
     const [numOfParticipants, setNumOfParticipants] = useState(1)
     const [room, setRoom] = useState(1)
     const { username } = route.params
 
     useEffect(() => {
+        console.log('username... ', username)
         initiateSocket(room)
         listenToNewConnections((numberOfConnections) => {
             console.log('num of connections = ', numberOfConnections)
             setNumOfParticipants(numberOfConnections)
         })
-        // listenToContributions((newCont) => {
-        //     console.log('newCont; ', newCont)
-        //     console.log('contributions: ', contributions)
-        //     setContributions([...contributions, newCont])
-        //     console.log('contributions after: ', contributions)
-        // })
-        console.log('username...', username)
+        listenToContributions((data) => {
+            setContributions(oldContributions => [data.contribution, ...oldContributions])
+            console.log('contributions after: ', contributions)
+        })
     }, [])
 
     // useEffect(() => {
@@ -38,7 +36,6 @@ export default function GroupChallengeScreen({ navigation, route }) {
     // }, [io.sockets.adapter.rooms.get(1).size])
 
     const submitContribution = () => {
-        console.log('what Iam submitting', contribution)
         sendContribution({ contribution, room, username })
         setContribution("")
     }
@@ -60,7 +57,7 @@ export default function GroupChallengeScreen({ navigation, route }) {
                 marginRight: '10%',
                 overflow: 'hidden'
             }}>
-                <Emoji symbol={Symbols[idx % 2]} />
+                <Emoji key={idx + Symbol[idx]} symbol={Symbols[idx % 2]} />
                 {' ' + el}</Text>
         )
         )
@@ -71,7 +68,7 @@ export default function GroupChallengeScreen({ navigation, route }) {
         for (let i = 0; i < 2; i++) {
             emojis.push(<Emoji key={i} symbol={Symbols[i]} />)
         }
-        emojis.push(<Text style={{ color: "#cc99ff" }}>in the challenge</Text>)
+        emojis.push(<Text key={numOfParticipants + 1} style={{ color: "#cc99ff" }}>in the challenge</Text>)
         return emojis.map(emoji => (emoji))
     }
 

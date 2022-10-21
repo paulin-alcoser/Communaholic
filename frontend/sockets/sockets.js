@@ -5,7 +5,7 @@ export const initiateSocket = (room) => {
     socket = io('http://localhost:3000');
     console.log(`Connecting socket...`);
     if (socket && room) socket.emit('join', room);
-    
+
 }
 
 export const listenToNewConnections = (cb) => {
@@ -25,12 +25,13 @@ export const disconnectSocket = () => {
 //         return cb(null, msg);
 //     });
 // }
-export const sendContribution = (contribution) => {
-    if (socket) socket.emit('submitContribution', { contribution });
+export const sendContribution = (data) => {
+    console.log('sending...', data)
+    if (socket) socket.emit('contributionSubmitted', data);
 }
 
 export const listenToContributions = (cb) => {
     if (!socket) return (true)
     console.log('listening to new contributions..')
-    socket.on('newContribution', cont => cb(cont));
+    socket.on('newContribution', data => cb(data));
 }
