@@ -56,7 +56,9 @@ export default function GroupChallengeScreen({ navigation, route }) {
                 marginLeft: '10%',
                 marginRight: '10%',
                 overflow: 'hidden'
-            }}> {el}    </Text>
+            }}> 
+            <Emoji symbol={Symbols[idx % 2]}/>
+             { ' ' + el}</Text>
         )
         )
     }
@@ -152,6 +154,8 @@ const styles = StyleSheet.create({
         flexDirection: 'row',
         width:'80%',
         position: 'absolute',
-        bottom: '5%'
+        bottom: '5%',
+        alignItems:'center',
+        justifyContent: 'center'
     }
 })
