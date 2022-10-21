@@ -10,21 +10,30 @@ export default function GroupChallengeScreen({ navigation, route }) {
     let socket
     const [contributions, setContributions] = useState(["Consumer advertising", "ESG Report"])
     const [contribution, setContribution] = useState("")
+    const [numOfParticipants, setNumOfParticipants] = useState(1)
 
     useEffect(() => {
         initiateSocket(1)
-        listenToContributions((newCont) => {
-            console.log('newCont; ', newCont)
-            console.log('contributions: ', contributions)
-            setContributions([...contributions, newCont])
-            console.log('contributions after: ', contributions)
+        listenToNewConnections((numberOfConnections) => {
+            console.log('num of connections = ', numberOfConnections)
+            setNumOfParticipants(numberOfConnections)
         })
+        // listenToContributions((newCont) => {
+        //     console.log('newCont; ', newCont)
+        //     console.log('contributions: ', contributions)
+        //     setContributions([...contributions, newCont])
+        //     console.log('contributions after: ', contributions)
+        // })
     }, [])
+
+    // useEffect(() => {
+    //     console.log(io.sockets.adapter.rooms.get(roomName).size)
+    // }, [io.sockets.adapter.rooms.get(1).size])
 
     const submitContribution = () => {
         console.log('what Iam submitting', contribution)
-        sendContribution(contribution)
-        setContribution("")
+        // sendContribution(contribution)
+        // setContribution("")
     }
 
     const renderContributions = () => {
@@ -64,6 +73,10 @@ export default function GroupChallengeScreen({ navigation, route }) {
                 />
                 <View style={styles.messagesContainer}>
                     {renderContributions()}
+                </View>
+                <View style={styles.participantsContainer}>
+                    <Text>I am participant</Text>
+
                 </View>
 
             </ImageBackground>

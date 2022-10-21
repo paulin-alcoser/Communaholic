@@ -4,8 +4,16 @@ let socket;
 export const initiateSocket = (room) => {
     socket = io('http://localhost:3000');
     console.log(`Connecting socket...`);
-    if (socket && room) socket.emit('join');
+    if (socket && room) socket.emit('join', room);
+    
 }
+
+export const listenToNewConnections = (cb) => {
+    if (!socket) return true
+    console.log('listening to new connections....')
+    socket.on('newConnection', numOfConnections => cb(numOfConnections))
+}
+
 export const disconnectSocket = () => {
     console.log('Disconnecting socket...');
     if (socket) socket.disconnect();
@@ -23,6 +31,6 @@ export const sendContribution = (contribution) => {
 
 export const listenToContributions = (cb) => {
     if (!socket) return (true)
-    console.log('listening..')
+    console.log('listening to new contributions..')
     socket.on('newContribution', cont => cb(cont));
 }
