@@ -1,12 +1,13 @@
 import { View, Text, ImageBackground, StyleSheet, TouchableOpacity } from 'react-native'
 import React from 'react'
 
-export default function TopicsScreen({ navigation }) {
+export default function TopicsScreen({ navigation, route }) {
+    const { username } = route.params 
     return (
         <View style={styles.container}>
 
             <ImageBackground source={require('../assets/img/TopicsBackground.png')} resizeMode="cover" style={styles.image}>
-                <TouchableOpacity onPress={() => navigation.navigate('Objectives')} style={styles.touchable}>
+                <TouchableOpacity onPress={() => navigation.navigate('Objectives', { username })} style={styles.touchable}>
                     <Text style={styles.text}>Corporate Sustainability</Text>
                 </TouchableOpacity>
 

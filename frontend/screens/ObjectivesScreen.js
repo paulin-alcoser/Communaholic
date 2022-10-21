@@ -31,8 +31,9 @@ const friends = [
     },
 ]
 
-export default function ObjectivesScreen({ navigation }) {
+export default function ObjectivesScreen({ navigation, route }) {
 
+    const { username } = route.params
     const [obj1Pressed, setObj1Pressed] = useState(false)
     const [obj2Pressed, setObj2Pressed] = useState(false)
     const [obj3Pressed, setObj3Pressed] = useState(false)
@@ -42,7 +43,7 @@ export default function ObjectivesScreen({ navigation }) {
         if (obj1Pressed &&
             obj2Pressed &&
             obj3Pressed) {
-            navigation.navigate('Challenge')
+            navigation.navigate('Challenge', { username })
         }
     }, [obj1Pressed, obj2Pressed, obj3Pressed])
 

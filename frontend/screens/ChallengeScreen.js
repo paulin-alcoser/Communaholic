@@ -2,7 +2,8 @@ import { StyleSheet, Text, View, Image, ImageBackground, TouchableOpacity } from
 import React from 'react'
 
 
-export default function ChallengeScreen({ navigation }) {
+export default function ChallengeScreen({ navigation, route }) {
+    const { username } = route.params
     return (
         <View style={styles.container}>
             <ImageBackground source={require('../assets/img/background.png')} resizeMode="contain" style={styles.image}>
@@ -17,7 +18,7 @@ export default function ChallengeScreen({ navigation }) {
                     <TouchableOpacity onPress={() => navigation.navigate('Quiz', { needTimer: true })} style={styles.challenge_btn}>
                         <Text style={styles.challenge_btn_txt}> 60 second Challenge </Text>
                     </TouchableOpacity>
-                    <TouchableOpacity onPress={() => navigation.navigate('GroupChallenge')} style={styles.challenge_btn}>
+                    <TouchableOpacity onPress={() => navigation.navigate('GroupChallenge', { username })} style={styles.challenge_btn}>
                         <Text style={styles.challenge_btn_txt}> Group Challenge </Text>
                     </TouchableOpacity>
                 </View>

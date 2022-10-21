@@ -14,7 +14,7 @@ export default function AnimationScreen({ navigation, route }) {
         }).start(() => {
             /* completion callback */
 
-            navigation.navigate('Topics')
+            navigation.navigate('Topics', { username })
 
         });
         Animated.timing(logoFade, {

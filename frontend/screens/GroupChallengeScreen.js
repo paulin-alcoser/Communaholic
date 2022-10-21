@@ -15,9 +15,11 @@ export default function GroupChallengeScreen({ navigation, route }) {
     const [contributions, setContributions] = useState(["Consumer advertising", "ESG Report"])
     const [contribution, setContribution] = useState("")
     const [numOfParticipants, setNumOfParticipants] = useState(1)
+    const [room, setRoom] = useState(1)
+    const { username } = route.params
 
     useEffect(() => {
-        initiateSocket(1)
+        initiateSocket(room)
         listenToNewConnections((numberOfConnections) => {
             console.log('num of connections = ', numberOfConnections)
             setNumOfParticipants(numberOfConnections)
@@ -28,6 +30,7 @@ export default function GroupChallengeScreen({ navigation, route }) {
         //     setContributions([...contributions, newCont])
         //     console.log('contributions after: ', contributions)
         // })
+        console.log('username...', username)
     }, [])
 
     // useEffect(() => {
@@ -36,8 +39,8 @@ export default function GroupChallengeScreen({ navigation, route }) {
 
     const submitContribution = () => {
         console.log('what Iam submitting', contribution)
-        // sendContribution(contribution)
-        // setContribution("")
+        sendContribution({ contribution, room, username })
+        setContribution("")
     }
 
     const renderContributions = () => {
@@ -56,20 +59,20 @@ export default function GroupChallengeScreen({ navigation, route }) {
                 marginLeft: '10%',
                 marginRight: '10%',
                 overflow: 'hidden'
-            }}> 
-            <Emoji symbol={Symbols[idx % 2]}/>
-             { ' ' + el}</Text>
+            }}>
+                <Emoji symbol={Symbols[idx % 2]} />
+                {' ' + el}</Text>
         )
         )
     }
 
     const renderParticipants = () => {
         const emojis = []
-        for(let i = 0; i < 2; i++){
+        for (let i = 0; i < 2; i++) {
             emojis.push(<Emoji key={i} symbol={Symbols[i]} />)
         }
-        emojis.push(<Text style={{color:"#cc99ff"}}>in the challenge</Text>)
-        return emojis.map( emoji => (emoji))
+        emojis.push(<Text style={{ color: "#cc99ff" }}>in the challenge</Text>)
+        return emojis.map(emoji => (emoji))
     }
 
     return (
@@ -149,13 +152,13 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         alignItems: 'center'
     },
-    participantsContainer:{
+    participantsContainer: {
         display: 'flex',
         flexDirection: 'row',
-        width:'80%',
+        width: '80%',
         position: 'absolute',
         bottom: '5%',
-        alignItems:'center',
+        alignItems: 'center',
         justifyContent: 'center'
     }
 })
