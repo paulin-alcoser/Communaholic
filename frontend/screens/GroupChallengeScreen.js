@@ -17,16 +17,20 @@ export default function GroupChallengeScreen({ navigation, route }) {
     const [numOfParticipants, setNumOfParticipants] = useState(1)
     const [room, setRoom] = useState(1)
     const { username } = route.params
+    const [usernameToEmojiID, setUsernameToEmojiID] = useState({})
 
     useEffect(() => {
         console.log('username... ', username)
-        initiateSocket(room)
-        listenToNewConnections((numberOfConnections) => {
+        initiateSocket(room, username)
+        listenToNewConnections((numberOfConnections, participants) => {
             console.log('num of connections = ', numberOfConnections)
+            console.log('participants: ', participants)
+            setUsernameToEmojiID(participants)
             setNumOfParticipants(numberOfConnections)
         })
         listenToContributions((data) => {
-            setContributions(oldContributions => [data.contribution, ...oldContributions])
+            console.log('data received:', data)
+            setContributions(oldContributions => [...oldContributions, data])
             console.log('contributions after: ', contributions)
         })
     }, [])
@@ -57,8 +61,8 @@ export default function GroupChallengeScreen({ navigation, route }) {
                 marginRight: '10%',
                 overflow: 'hidden'
             }}>
-                <Emoji key={idx + Symbol[idx]} symbol={Symbols[idx % 2]} />
-                {' ' + el}</Text>
+                <Emoji username key={idx + Symbol[idx]} symbol={Symbols[usernameToEmojiID[el.username]]} />
+                {' ' + el.contribution}</Text>
         )
         )
     }
@@ -66,7 +70,7 @@ export default function GroupChallengeScreen({ navigation, route }) {
     const renderParticipants = () => {
         const emojis = []
         for (let i = 0; i < 2; i++) {
-            emojis.push(<Emoji key={i} symbol={Symbols[i]} />)
+            emojis.push(<Emoji username key={i} symbol={Symbols[i]} />)
         }
         emojis.push(<Text key={numOfParticipants + 1} style={{ color: "#cc99ff" }}>in the challenge</Text>)
         return emojis.map(emoji => (emoji))

@@ -1,17 +1,17 @@
 import io from 'socket.io-client';
 let socket;
 
-export const initiateSocket = (room) => {
+export const initiateSocket = (room, username) => {
     socket = io('http://localhost:3000');
     console.log(`Connecting socket...`);
-    if (socket && room) socket.emit('join', room);
+    if (socket && room) socket.emit('join', {room, username});
 
 }
 
 export const listenToNewConnections = (cb) => {
     if (!socket) return true
     console.log('listening to new connections....')
-    socket.on('newConnection', numOfConnections => cb(numOfConnections))
+    socket.on('newConnection', ({numOfConnections, participants}) => cb(numOfConnections, participants))
 }
 
 export const disconnectSocket = () => {
